@@ -1,139 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../backend/firebase-fetchingDB'; // Adjust this import according to your project structure
+import React, { useState } from 'react';
+import universityData from '../universities_data.json'; // Adjust this import according to your project structure
 
 const UniversitiesList = () => {
-  const [universities, setUniversities] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [editingId, setEditingId] = useState(null);
+  const [universities] = useState(universityData);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const universitiesPerPage = 10;
 
-  useEffect(() => {
-    const fetchUniversities = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "universities"));
-        const universitiesArray = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setUniversities(universitiesArray);
-      } catch (error) {
-        console.error("Error fetching universities: ", error);
-      }
-    };
+  // Calculate the currently displayed universities based on pagination
+  const indexOfLastUniversity = currentPage * universitiesPerPage;
+  const indexOfFirstUniversity = indexOfLastUniversity - universitiesPerPage;
+  const currentUniversities = universities.slice(indexOfFirstUniversity, indexOfLastUniversity);
 
-    fetchUniversities();
-  }, []);
+  const filteredUniversities = searchTerm
+    ? universities.filter(university =>
+        university["University Name"].toLowerCase().includes(searchTerm.toLowerCase())
+      ).slice(0, indexOfLastUniversity)
+    : currentUniversities;
 
-  const addUniversity = async () => {
-    const newUniversity = {
-      logo: "https://via.placeholder.com/150",
-      name: `New University ${universities.length + 1}`,
-      disciplineType: "Engineering",
-    };
-
-    try {
-      const docRef = await addDoc(collection(db, "universities"), newUniversity);
-      setUniversities([...universities, { id: docRef.id, ...newUniversity }]);
-    } catch (error) {
-      console.error("Error adding university: ", error);
-    }
+  const loadMore = () => {
+    setCurrentPage(prevPage => prevPage + 1);
   };
-
-  const saveEdit = async (id) => {
-    try {
-      const universityRef = doc(db, "universities", id);
-      await updateDoc(universityRef, { name: newName });
-      setUniversities(universities.map(university =>
-        university.id === id ? { ...university, name: newName } : university
-      ));
-      setEditingId(null);
-      setNewName('');
-    } catch (error) {
-      console.error("Error updating university: ", error);
-    }
-  };
-
-  const deleteUniversity = async (id) => {
-    try {
-      await deleteDoc(doc(db, "universities", id));
-      setUniversities(universities.filter(university => university.id !== id));
-    } catch (error) {
-      console.error("Error deleting university: ", error);
-    }
-  };
-
-  const filteredUniversities = universities.filter(university =>
-    university.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <main className="flex-1 p-8">
+    <div className="flex flex-col h-screen bg-gray-100">
+      <main className="flex-1 overflow-y-auto p-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-xl font-semibold">University List</h1>
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              placeholder="Search University..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border rounded"
-            />
-          </div>
+          <h1 className="text-2xl font-semibold text-gray-800">University List</h1>
+          <input
+            type="text"
+            placeholder="Search University..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reset to first page on new search
+            }}
+            className="form-input px-4 py-2 border border-gray-300 rounded-md"
+          />
         </div>
 
-        <div className="bg-white p-6 rounded shadow">
-          <div style={{ maxHeight: 'calc(100vh - 350px)', overflowY: 'scroll' }}> {/* Set max height and overflow */}
-            <table className="w-full text-left">
-              <thead>
-                <tr>
-                  <th className="pb-4">S.No</th>
-                  <th className="pb-4">Logo</th>
-                  <th className="pb-4">University Name</th>
-                  <th className="pb-4">Discipline Type</th>
-                  <th className="pb-4">Actions</th>
+        <div className="bg-dark p-6 rounded-lg shadow">
+        <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th className="py-3 px-6 ">S.No</th>
+                <th className="py-3 px-6 ">Logo</th>
+                <th className="py-3 px-6 ">University Name</th>
+                <th className="py-3 px-6">Specialization</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUniversities.map((university, index) => (
+                <tr key={university.id} className="border-b last:border-b-0">
+                  <td className="py-4 px-6 text-gray-800">{indexOfFirstUniversity + index + 1}</td>
+                  <td className="py-4 px-6">
+                    <img src={university.Image} alt="Logo" className="w-12 h-12 rounded-full mx-auto" />
+                  </td>
+                  <td className="py-4 px-6 text-gray-800">
+                    {university["University Name"]}
+                  </td>
+                  <td className="py-4 px-6 text-gray-800">{university.Specialization}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredUniversities.map((university, index) => (
-                  <tr key={university.id}>
-                    <td className="pt-4 pb-2">{index + 1}</td>
-                    <td className="pt-4 pb-2">
-                      <img src={university.logo} alt="Logo" className="w-12 h-12" />
-                    </td>
-                    <td className="pt-4 pb-2">
-                      {editingId === university.id ? (
-                        <input
-                          type="text"
-                          value={newName}
-                          onChange={(e) => setNewName(e.target.value)}
-                          className="p-2 border rounded"
-                        />
-                      ) : (
-                        university.name
-                      )}
-                    </td>
-                    <td className="pt-4 pb-2">{university.disciplineType}</td>
-                    <td className="pt-4 pb-2">
-                      {editingId === university.id ? (
-                        <button onClick={() => saveEdit(university.id)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Save</button>
-                      ) : (
-                        <>
-                          <button onClick={() => {setEditingId(university.id); setNewName(university.name);}} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Edit</button>
-                          <button onClick={() => deleteUniversity(university.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2">Delete</button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="flex space-x-2 mt-4">
-            <button onClick={addUniversity} className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Add New University</button>
-          </div>
+              ))}
+            </tbody>
+          </table>
+          {indexOfLastUniversity < universities.length && (
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={loadMore}
+                className="bg-gray-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200 ease-in-out"
+              >
+                Load More
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>

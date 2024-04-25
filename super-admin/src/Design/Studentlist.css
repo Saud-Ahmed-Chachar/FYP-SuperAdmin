@@ -1,0 +1,27 @@
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary { background-color: #2563eb; color: white; }
+.btn-success { background-color: #16a34a; color: white; }
+.btn-warning { background-color: #d97706; color: white; }
+.btn-error { background-color: #dc2626; color: white; }
+
+.btn:hover {
+  filter: brightness(90%);
+}
+
+.form-input {
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
+}

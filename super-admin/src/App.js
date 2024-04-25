@@ -4,17 +4,20 @@ import LoginPage from './components/Login';
 import UniversitiesList from './components/UniversitiesList';
 import StudentsList from './components/StudentsList';
 import Dashboard from './components/Dashboard';
-import ScholarshipList from './components/ScholarshipList';
+import ScholarshipList from './components/ScholarshipList';;
 
 // Sidebar component
 // Sidebar component
 const Sidebar = () => {
   return (
     <aside className="w-64 bg-gray-800 text-white p-6 fixed h-full">
+        <div className="w-16 bg-gray-900 text-white flex items-center justify-center">
+        <img src="https://th.bing.com/th/id/OIG3.N5G3Vo7taEPbYjB5I50s?pid=ImgGn" alt="Logo" className="h-10 w-auto" />
+      </div>
       <nav className="mt-10">
         <Link to="/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Dashboard</Link>
         <Link to="/universities" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">University List</Link>
-        <Link to="/students" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Student List</Link>
+        <Link to="/students" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">User List</Link>
         <Link to="/scholarships" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Scholarship List</Link>
         <Link to="/logout" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700">Logout</Link>
       </nav>
