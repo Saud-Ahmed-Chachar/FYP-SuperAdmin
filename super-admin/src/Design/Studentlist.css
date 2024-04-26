@@ -3,6 +3,7 @@
   border-radius: 0.375rem;
   font-weight: 600;
   transition: background-color 0.3s, color 0.3s;
+ margin-right: 10%;
 }
 
 .btn-primary { background-color: #2563eb; color: white; }
