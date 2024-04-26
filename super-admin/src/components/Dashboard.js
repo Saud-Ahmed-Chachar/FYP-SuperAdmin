@@ -80,13 +80,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <main className="flex-1">
-        <div className="p-10">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <hr className="my-6" />
+    <div className="flex flex-col min-h-screen bg-gray-50">
+    <main className="flex-grow">
+      <div className="p-4 md:p-10">
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <hr className="my-4 md:my-6" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="p-6 bg-white rounded-lg shadow">
               <Bar data={chartData} options={options} />
             </div>

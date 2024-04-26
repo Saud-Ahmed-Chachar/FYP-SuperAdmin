@@ -40,8 +40,8 @@ const UniversitiesList = () => {
         </div>
 
         <div className="bg-dark p-6 rounded-lg shadow">
-        <table className="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="min-w-full text-sm text-left text-gray-500 white:text-gray-400">
+          <thead className="text-xs text-gray-100 uppercase bg-gray-50 dark:bg-indigo-500 white:text-white-400"  style={{ background: 'linear-gradient(to right, rgb(36, 18, 101) 0%, rgb(0, 130, 203) 100%)', color: 'white', boxSizing: 'border-box' }}> 
               <tr>
                 <th className="py-3 px-6 ">S.No</th>
                 <th className="py-3 px-6 ">Logo</th>
@@ -68,7 +68,7 @@ const UniversitiesList = () => {
             <div className="flex justify-center mt-4">
               <button
                 onClick={loadMore}
-                className="bg-gray-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200 ease-in-out"
+                className="bg-indigo-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-200 ease-in-out"
               >
                 Load More
               </button>
