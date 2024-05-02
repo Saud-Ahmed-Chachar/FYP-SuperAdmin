@@ -32,10 +32,10 @@ const Login = () => {
                 <h1 className="text-2xl font-semibold sm:text-3xl">Super Admin Login</h1>
 
 
-     <label htmlFor="Username" className="block text-sm font-medium text-gray-700">
-      Username
-    </label>
+   
               </div>
+
+    
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <input
                   
@@ -48,10 +48,11 @@ const Login = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
-
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-      Password
+                      <label htmlFor="Username" className="block text-sm font-medium text-gray-700">
+      Username
     </label>
+
+   
                 <input
                   id="password"
                   name="password"
@@ -62,6 +63,9 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+      Password
+    </label>
                 <div className="flex flex-col items-center">
                   <button type="submit" className="bg-indigo-700 text-white rounded-md px-4 py-2 w-full transform hover:scale-105 transition-transform">
                     Login
